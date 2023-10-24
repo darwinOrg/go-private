@@ -16,5 +16,5 @@ func main() {
 		mod := c.Param("mod")
 		c.HTML(http.StatusOK, "default.tmpl", gin.H{"mod": mod})
 	})
-	r.Run()
+	r.Run(":8080")
 }
