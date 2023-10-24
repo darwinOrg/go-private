@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: go-private
+  name: go-private
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-private
+  strategy: { }
+  template:
+    metadata:
+      labels:
+        app: go-private
+    spec:
+      containers:
+        - image: registry-vpc.cn-shanghai.aliyuncs.com/star_main/go-private:${TIMESTAMP}
+          name: go-private
+          resources:
+            limits:
+              memory: "400Mi"
+          imagePullPolicy: Always
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+      # 应用部署所在节点选择 arm64 或 amd64
+      nodeSelector:
+        kubernetes.io/arch: arm64
+status: { }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: go-private
+  name: go-private-service
+spec:
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: go-private
+  type: ClusterIP
+status:
+  loadBalancer: { }
