@@ -8,7 +8,7 @@ import (
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
-	r.LoadHTMLGlob("templates/*")
+	r.LoadHTMLGlob("resources/*")
 	r.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "%s", "ok")
 	})

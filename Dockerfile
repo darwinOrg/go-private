@@ -23,6 +23,7 @@ WORKDIR /target
 
 # 复制编译后的程序
 COPY --from=builder /application/build/go-private /target/go-private
+COPY --from=builder /application/resources/ /target/resources
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
 EXPOSE 8080
