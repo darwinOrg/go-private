@@ -17,14 +17,15 @@ RUN go mod download
 
 RUN go build -ldflags "-s -w" -o /application/build/go-private main.go
 
-FROM registry.cn-shanghai.aliyuncs.com/star_base/golang-arm:1.19.1
+FROM registry.cn-shanghai.aliyuncs.com/star_base/golang-x86:1.19.1
 
 WORKDIR /target
 
 # 复制编译后的程序
 COPY --from=builder /application/build/go-private /target/go-private
 COPY --from=builder /application/resources/ /target/resources
+COPY --from=builder /application/certs/ /target/certs
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
-EXPOSE 8080
+EXPOSE 443
 ENTRYPOINT ["/target/go-private"]
