@@ -16,5 +16,7 @@ func main() {
 		mod := c.Param("mod")
 		c.HTML(http.StatusOK, "default.tmpl", gin.H{"mod": mod})
 	})
-	r.Run(":8080")
+
+	r.RunTLS(":8080", "./certs/server.crt", "./certs/server.key")
+	//r.Run(":8080")
 }
